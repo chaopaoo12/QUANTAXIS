@@ -470,3 +470,6 @@ def QA_neutralize_factor(
         dummy_industry = get_industry_exposure(factor, date=date)
         x = dummy_industry.T
     return (sm.OLS(factor[factor], x.astype(float)).fit().resid.rename(factor),)
+
+if __name__ == '__main__':
+    pass

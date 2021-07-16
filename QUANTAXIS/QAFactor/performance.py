@@ -476,3 +476,6 @@ def cumulative_returns(returns: pd.DataFrame, period, freq=None):
                     slice_idx,
                     freq
                 )
+
+if __name__ == '__main__':
+    pass

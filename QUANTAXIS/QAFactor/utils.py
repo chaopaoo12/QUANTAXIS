@@ -262,3 +262,5 @@ def diff_custom_calendar_timedeltas(start, end, freq):
     delta_days = timediff.components.days - actual_days
     return timediff - pd.Timedelta(days=delta_days)
 """
+if __name__ == '__main__':
+    pass

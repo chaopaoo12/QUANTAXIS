@@ -131,3 +131,5 @@ def print_table(
     # from alphalens, seems useless
     # if fmt is not None:
     #     pd.set_option("display.float_format", prev_option)
+if __name__ == '__main__':
+    pass

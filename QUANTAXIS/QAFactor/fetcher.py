@@ -980,3 +980,5 @@ if __name__ == "__main__":
     # print(QA_fetch_stock_name(
     #     code=['000001', '000002'], cursor_date="20081009"))
     # print(QA_fetch_daily_basic(cursor_date="2018-01-01"))
+if __name__ == '__main__':
+    pass

@@ -294,3 +294,6 @@ def plot_cumulative_returns(
         period=period,
     )
     pass
+
+if __name__ == '__main__':
+    pass

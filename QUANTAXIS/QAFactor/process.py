@@ -384,3 +384,6 @@ def demean_forward_returns(factor_data: pd.DataFrame,
                                                             axis=1))
 
     return factor_data
+
+if __name__ == '__main__':
+    pass

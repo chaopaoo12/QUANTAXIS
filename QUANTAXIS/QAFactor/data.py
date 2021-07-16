@@ -461,3 +461,5 @@ class DataApi:
             stock_start_date=self.get_start_date,
             frequence=self.frequence,
         )
+if __name__ == '__main__':
+    pass

@@ -129,3 +129,6 @@ def create_summary_tear_sheet(
 
     plt.show()
     gf.close()
+
+if __name__ == '__main__':
+    pass

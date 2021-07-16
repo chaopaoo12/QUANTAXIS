@@ -539,10 +539,5 @@ def QA_ts_update_daily_basic():
         coll.insert_many(js)
 
 
-if __name__ == "__main__":
-    # QA_ts_update_all()
-    # QA_ts_update_inc()
-    # QA_ts_update_industry()
-    # QA_ts_update_stock_basic()
-    # QA_ts_update_namechange()
-    QA_ts_update_daily_basic()
+if __name__ == '__main__':
+    pass
