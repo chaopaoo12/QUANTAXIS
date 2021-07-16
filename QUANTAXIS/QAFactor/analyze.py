@@ -502,3 +502,5 @@ class FactorAnalyzer:
 #             plotting.plot_cummulative_returns(
 #                 factor_returns[p], period=p, title=title, ax=gf.next_row()
 #             )
+if __name__ == '__main__':
+    pass
