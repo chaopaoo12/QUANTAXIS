@@ -1,32 +1,30 @@
 extern crate chrono_tz;
 
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::{BufRead, BufReader, Error, Write};
 
 use actix::Actor;
 use actix_rt;
 use actix_rt::Arbiter;
-use chrono::{Date, Local};
-use chrono_tz::{Tz, UTC};
+use chrono::Local;
+
 use serde_json::Value;
 
 use qapro_rs::launchstrategy;
-use qapro_rs::qaaccount::account::QA_Account;
+
 use qapro_rs::qaconnector::clickhouse::ckclient;
 use qapro_rs::qaconnector::clickhouse::ckclient::DataConnector;
 use qapro_rs::qaenv::localenv::CONFIG;
 use qapro_rs::qalog::log4::init_log4;
-use qapro_rs::qaprotocol::mifi::{market::StockDay, qafastkline::QAKlineBase};
+use qapro_rs::qaprotocol::mifi::qafastkline::QAKlineBase;
 use qapro_rs::qapubsub::{instruct_mq::InstructMQ, market_mq::MarketMQ};
 use qapro_rs::qaruntime::{
     base::MarketSubscribe,
     monitor::Monitor,
-    qacontext::{QAContext, StrategyFunc},
+    qacontext::QAContext,
     qamanagers::{monitor_manager::MonitorManager, mq_manager::MQManager},
 };
 use qapro_rs::qastrategy::t00;
-use qapro_rs::qastrategy::t00::{Params, QAStrategy};
+
 use qapro_rs::qautil::tradedate::get_n_day_before_date9;
 
 #[actix_rt::main]
@@ -35,10 +33,10 @@ async fn main() {
 
     let codelist = ["600010.XSHG", "300002.XSHE"];
     let hisdata = c
-        .exectue(Vec::from(codelist), "2021-07-11", "2021-08-05", "day")
+        .get_stock(Vec::from(codelist), "2021-07-11", "2021-12-22", "day")
         .await
         .unwrap();
-    println!("{:#?}",hisdata.to_kline());
+    //println!("{:#?}",hisdata.to_kline());
 
     println!(
         "QARUNTIME Start: {}",
@@ -73,7 +71,7 @@ async fn main() {
     let morm = morm_addr.clone();
     let arb = Arbiter::new();
 
-    InstructMQ::start_in_arbiter(&arb, move |_| InstructMQ {
+    InstructMQ::start_in_arbiter(&arb.handle(), move |_| InstructMQ {
         amqp: CONFIG.instruct.uri.clone(),
         exchange: CONFIG.instruct.exchange.clone(),
         routing_key: CONFIG.instruct.routing_key.clone(),
@@ -86,7 +84,7 @@ async fn main() {
         let mc = code.clone();
         let arc = Arbiter::new();
 
-        MarketMQ::start_in_arbiter(&arc, move |_| {
+        MarketMQ::start_in_arbiter(&arc.handle(), move |_| {
             MarketMQ::new(
                 CONFIG.realtime.uri.clone(),
                 CONFIG.realtime.exchange.clone(),

@@ -53,6 +53,8 @@ pub struct Config {
     pub backtest: Backtest,
     pub instruct: MQConfig,
     pub ack: MQConfig,
+    pub common: Common,
+    pub DataPath: DataPath,
 }
 
 impl Config {
@@ -118,7 +120,7 @@ pub struct RedisConfig {
 impl Default for RedisConfig {
     fn default() -> Self {
         Self {
-            uri: "redis://localhost:6379".to_owned(),
+            uri: "redis://localhost:6379/0".to_owned(),
         }
     }
 }
@@ -133,6 +135,26 @@ impl Default for ClickhouseConfig {
     fn default() -> Self {
         Self {
             uri: "tcp://default@192.168.2.126:9000?compression=lz4&ping_timeout=42ms".to_owned(),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(default)]
+pub struct Common {
+    pub addr: String,
+    pub log_level: String,
+    pub key: String,
+    pub qifi_gap: u64,
+}
+
+impl Default for Common {
+    fn default() -> Self {
+        Self {
+            addr: "0.0.0.0:5000".to_string(),
+            log_level: "info".to_string(),
+            key: "quantaxis".to_string(),
+            qifi_gap: 5,
         }
     }
 }
@@ -183,16 +205,34 @@ impl Default for Cli {
 #[serde(default)]
 pub struct Backtest {
     pub start: String,
+    pub end: String,
 }
 
 impl Default for Backtest {
     fn default() -> Self {
         Self {
             start: "2020-01-01 09:00:00".to_owned(),
+            end: "2021-12-01 09:00:00".to_owned(),
         }
     }
 }
+#[derive(Clone, Debug, Deserialize)]
+#[serde(default)]
+pub struct DataPath {
+    pub cache: String,
+    pub cachestart: String,
+    pub cacheend: String,
+}
 
+impl Default for DataPath {
+    fn default() -> Self {
+        Self {
+            cache: "/data/".to_owned(),
+            cachestart: "".to_string(),
+            cacheend: "".to_string(),
+        }
+    }
+}
 pub fn new_config() -> Config {
     let _args: Vec<String> = env::args().collect();
 
